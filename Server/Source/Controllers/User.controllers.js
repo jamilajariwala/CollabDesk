@@ -51,8 +51,8 @@ const refreshAccessToken=async(req,res)=>{
 
 const register=asyncHandler(async(req,res)=>{
 
-    const {username,fullname,email,password}=req.body
-    if ([username,fullname,email,password].some((field)=>!field || field.trim()===""))
+    const {username,fullname,email,password,confirmpassword}=req.body
+    if ([username,fullname,email,password,confirmpassword].some((field)=>!field || field.trim()===""))
     {
         throw new ApiError(400,"All Fields are Required")
     }
@@ -74,6 +74,10 @@ const register=asyncHandler(async(req,res)=>{
         if(existuser.email === email.toLowerCase()){
             throw new ApiError(400,"Email already exist")
         }
+    }
+
+    if(password !== confirmpassword){
+        throw new ApiError(400,"confirm password do not match with orignal password.")
     }
 
     const createuser=await User.create({
@@ -236,7 +240,7 @@ const forgotPassword=asyncHandler(async(req,res)=>{
     status(200).
     json(new ApiResponse(200,
         {},
-        "otp send successfully"
+        "otp sent successfully"
     ))
 })
 
@@ -300,6 +304,44 @@ const resetPassword=asyncHandler(async(req,res)=>{
         new ApiResponse(200,{},"Password reset successfully.")
     )
 })
+const resendOtp=asyncHandler(async(req,res)=>{
+    const {email}=req.body
+    if(!email) throw new ApiError(400,"Email required")
+    
+    const user=await User.findOne({
+        email:email.toLowerCase()
+    })
+    if (!user) throw new ApiError(400,"Invalid email")
+
+    const newOtp=Math.floor(100000 + Math.random()*900000).toString()
+
+    user.forgetPasswordOtp=newOtp
+    user.forgetPasswordOtpExpiry=Date.now() + 600000
+    user.forgetPasswordOtpVerified=false
+    await user.save({validateBeforeSave:false})
+    const send=await sendMail(
+        user.email,
+        "Resend OTP for password Reset",
+        `<h2>Reset Your Password.</h2>
+        <p>your otp is:<h2>${newOtp}</h2>.</p>
+        <p>your OTP expires in 10 minutes.</p>`
+    )
+    if (!send){
+        user.forgetPasswordOtp=undefined
+        user.forgetPasswordOtpExpiry=undefined
+        user.forgetPasswordOtpVerified=false
+        await user.save({validateBeforeSave:false})
+
+        throw new ApiError(500,"Somthing went wrong while sending OTP")
+    }
+
+    return res.
+    status(200).
+    json(new ApiResponse(200,
+        {},
+        "otp sent successfully"
+    ))
+})
 export {
     register,
     login,
@@ -309,5 +351,6 @@ export {
     getCurrentUser,
     forgotPassword,
     verifyOtp,
-    resetPassword
+    resetPassword,
+    resendOtp
 }

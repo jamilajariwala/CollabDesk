@@ -1,6 +1,6 @@
 import React from 'react'
-import FeatureCard from '../FeatureCard'
 import {FolderKanban, UsersRound, FileOutput, Bell} from 'lucide-react'
+import FeatureCard from './FeatureCard'
 
 const Feature = () => {
     const feature=[
@@ -44,6 +44,7 @@ const Feature = () => {
             {
                 feature.map((item,index)=>{
                     return  <FeatureCard item={item} key={index}></FeatureCard>
+                    
                 })
             }
         </div>

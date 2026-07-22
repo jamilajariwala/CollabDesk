@@ -21,20 +21,20 @@ const Footer = () => {
                     <h3 className='text-white font-medium tracking-wide text-sm uppercase mt-2'>Features</h3>
                     </div>
                     <ul className=' text-white/70 leading-relaxed  select-none flex flex-col gap-1 mt-2'>
-                        <li className='group '>
-                            <a href='#feature_section' className='relative flex items-center cursor-pointer'>
+                        <li>
+                            <a href='#feature_section' className='relative flex items-center cursor-pointer group'>
                                 <ChevronRight size={15} color="#2773ba" className='opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all duration-200 '/>
                                 <span className='group-hover:text-white group-hover:translate-x-2 transition-all duration-200'>Features</span>
                             </a>
                         </li>
-                         <li className='group'>
-                            <a href='#howitworks_section' className='flex items-center cursor-pointer'>
+                         <li>
+                            <a href='#howitworks_section' className='flex items-center cursor-pointer group'>
                                 <ChevronRight size={15} color="#2773ba" className='opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all duration-200'/>
                                 <span className='group-hover:text-white group-hover:translate-x-2 transition-all duration-200'>How it Works</span>
                             </a>
                         </li>
-                         <li className='group'>
-                            <a href='#pricing_section' className='flex items-center cursor-pointer'>
+                         <li>
+                            <a href='#pricing_section' className='flex group items-center cursor-pointer'>
                                 <ChevronRight size={15} color="#2773ba" className='opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all duration-200'/>
                                 <span className='group-hover:text-white group-hover:translate-x-2 transition-all duration-200'>Pricing</span>
                             </a>
@@ -48,8 +48,8 @@ const Footer = () => {
                         <h3 className='text-white font-medium tracking-wide text-sm uppercase mt-2'>About</h3>
                     </div>
                    <ul className=' text-white/70 leading-relaxed  select-none flex flex-col gap-1 mt-2'>
-                        <li className='group '>
-                            <a className='relative flex items-center cursor-pointer'>
+                        <li >
+                            <a className='relative flex group items-center cursor-pointer'>
                                 <ChevronRight size={15} color="#2773ba" className='opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all duration-200 '/>
                                 <span className='group-hover:text-white group-hover:translate-x-2 transition-all duration-200'>About</span>
                             </a>
@@ -62,8 +62,8 @@ const Footer = () => {
                         <h3 className='text-white font-medium tracking-wide text-sm uppercase mt-2'>Contact</h3>
                     </div>
                    <ul className=' text-white/70 leading-relaxed  select-none flex flex-col gap-1 mt-2'>
-                        <li className='group '>
-                            <a className='relative flex items-center cursor-pointer'>
+                        <li>
+                            <a className='relative flex items-center group cursor-pointer'>
                                 <ChevronRight size={15} color="#2773ba" className='opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all duration-200 '/>
                                 <span className='group-hover:text-white group-hover:translate-x-2 transition-all duration-200'>Contact</span>
                             </a>

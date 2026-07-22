@@ -42,7 +42,12 @@ const userSchema=new mongoose.Schema({
     forgetPasswordOtpVerified: {
     type: Boolean,
     default: false
-}
+    },
+    plan:{
+        type:String,
+        enum:['Free',"Pro"],
+        default:"Free"
+    }
 },{
     timestamps:true
 }
