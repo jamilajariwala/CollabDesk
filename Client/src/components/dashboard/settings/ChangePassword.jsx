@@ -98,7 +98,7 @@ const ChangePassword = () => {
                     label="Confirm Password" 
                     placeholder="Confirm password"
                     name="confirm"
-                    value={formData.value}
+                    value={formData.confirm}
                     change={change}/>
                 <AuthButton button="Update Password"/>
                 </form>
