@@ -171,7 +171,7 @@ const getCurrentUser=asyncHandler(async(req,res)=>{
         return res
         .status(200)
         .json(
-            new ApiResponse(200,req.user,"user fetched successfully")
+            new ApiResponse(200,{user:req.user},"user fetched successfully")
         )
         
 })
@@ -342,6 +342,23 @@ const resendOtp=asyncHandler(async(req,res)=>{
         "otp sent successfully"
     ))
 })
+
+const deleteUser=asyncHandler(async(req,res)=>{
+    await User.findByIdAndDelete(
+        req.user._id
+    )
+    const options={
+        httpOnly:true,
+        secure:true
+    }
+    return res
+    .status(200)
+    .clearCookie("accesstoken",options)
+    .clearCookie("refreshtoken",options)
+    .json(
+        new ApiResponse(200,{},"User Deleted")
+    )
+})
 export {
     register,
     login,
@@ -352,5 +369,6 @@ export {
     forgotPassword,
     verifyOtp,
     resetPassword,
-    resendOtp
+    resendOtp,
+    deleteUser
 }

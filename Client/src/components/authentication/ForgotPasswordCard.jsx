@@ -42,7 +42,7 @@ const ForgotPasswordCard = () => {
 
   return (
     <div>
-         <div className='border w-full max-w-lg bg-white/60 border-white/40 backdrop-blur-3xl rounded-lg shadow-md my-5'>
+         <div className='border w-fit bg-white/60 border-white/40 backdrop-blur-3xl rounded-lg shadow-md my-5'>
             <div className=' px-6 py-4 flex flex-col gap-6'>
                 <div className='flex flex-col justify-center items-center'>
                     <h2 className='font-medium text-xl md:text-2xl'>Forgot your password</h2>

@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import AuthButton from "./AuthButton";
 import InputField from "./InputField";
 import PasswordInputField from "./PasswordInputField";
 import { CircleUser } from "lucide-react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 const LoginCard=()=>{
     const [formData,setFormData]=useState({
         usernm:"",
         password:""
     })
+    const {setUser}=useContext(AuthContext)
     const [error,setError]=useState("")
     const [success,setSuccess]=useState("")
     const API_BASE_URL=import.meta.env.VITE_API_BASE_URL
@@ -45,16 +47,23 @@ const LoginCard=()=>{
                 usernm:"",
                 password:""
             })
-
+            setUser(res?.data?.data)
             navigate(
                 '/dashboard'
             )
         } catch (e) {
             setError(e?.response?.data?.message || "something went wrong")
+            if (e.response?.data?.message == "user does not exist"){
+            setTimeout(() => {
+                navigate(
+                    '/register'
+                )
+            }, 2000);
+        }
         }
     }
     return (
-        <div className='border w-full max-w-lg bg-white/60 border-white/40 backdrop-blur-3xl rounded-lg shadow-md my-5'>
+        <div className='border w-fit bg-white/60 border-white/40 backdrop-blur-3xl rounded-lg shadow-md my-5'>
             <div className=' px-6 py-4 flex flex-col gap-6'>
                 <div className='flex flex-col justify-center items-center'>
                     <h2 className='font-medium text-xl md:text-2xl'>Welcome back</h2>
