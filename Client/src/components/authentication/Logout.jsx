@@ -1,11 +1,10 @@
-import axios from 'axios'
 import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
+import api from '../../service/api'
 
 const Logout = ({close}) => {
     const [error,setError]=useState("")
-    const API_BASE_URL=import.meta.env.VITE_API_BASE_URL
     const navigate=useNavigate()
     const {setUser}=useContext(AuthContext)
     const cancle=()=>{
@@ -15,13 +14,7 @@ const Logout = ({close}) => {
         e.preventDefault()
         setError("")
         try {
-            await axios.post(
-                `${API_BASE_URL}/user/logout`,
-                {},
-                {
-                    withCredentials:true
-                }
-            )
+            await api.post('/user/logout')
             setUser(null)
             navigate(
                 '/login',
@@ -30,6 +23,10 @@ const Logout = ({close}) => {
                 }
             )
         } catch (error) {
+            if(error.response?.status===401){
+                setUser(null)
+                return
+            }
             setError(error.response?.data?.message || "Something went wrong")
         }
     }

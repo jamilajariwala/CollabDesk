@@ -1,25 +1,21 @@
-import axios from "axios";
 import { Children, createContext, useEffect, useState } from "react";
+import api from "../service/api";
 
 export const AuthContext=createContext()
 
 const AuthContextProvider=({children})=>{
-    const API_BASE_URL=import.meta.env.VITE_API_BASE_URL
     const [user,setUser]=useState(null)
     const [loading,setLoading]=useState(true)
     const fetchCurrentUser=async()=>{
         try {
-            const response=await axios.get(
-                `${API_BASE_URL}/user/getuser`,
-                {
-                    withCredentials:true
-                }
-            )
+            const response=await api.get('/user/getuser')
             setUser(response?.data?.data)
         } catch (error) {
-            setUser(null)
-            console.log(error);
-            
+            if (error.response?.status === 401) {
+                setUser(null);
+            } else {
+                console.error(error);
+            }
         }
         finally{
             setLoading(false)

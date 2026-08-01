@@ -9,14 +9,19 @@ app.use(express.urlencoded({extended:true}))
 app.use(express.static('public'))
 app.use(cookieParser())
 app.use(cors({
-    origin:process.env.CLIENT_URL,
+    origin:process.env.CLIENT_URL || "http://localhost:5173",
     credentials:true
 }
 ))
 
 import userRouter from './Routers/user.route.js'
+import projectRouter from './Routers/project.route.js'
+import calculation from './Routers/calculation.route.js'
 
 app.use('/api/v1/user',userRouter)
+app.use('/api/v1/project',projectRouter)
+app.use('/api/v1/calculate',calculation)
+
 app.use((err, req, res, next) => {
     res.status(err.statuscode || 500).json({
         success: err.success || false,

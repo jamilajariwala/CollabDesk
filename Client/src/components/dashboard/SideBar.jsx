@@ -33,9 +33,11 @@ const SideBar=()=>{
                         CollabDesk
                 </h1>
                 <ul className='flex flex-col gap-4 pt-8 list-none text-[#6D8196] text-lg'>
+                    <Link to='/dashboard'>
                     <li className=' hover:bg-gray-500/10 p-2 hover:rounded-xl group transition-all cursor-pointer duration-200 flex items-center gap-3' onClick={toggle}>
                         <House size={18}/> <span className='group-hover:font-medium'>Dashboard</span>
                     </li>
+                    </Link>
                     <li className=' hover:bg-gray-500/10 p-2 hover:rounded-xl  transition-all cursor-pointer group duration-200 flex items-center gap-3' onClick={toggle}>
                         <FolderDot size={18}/> <span className='group-hover:font-medium'>Projects</span>
                     </li>

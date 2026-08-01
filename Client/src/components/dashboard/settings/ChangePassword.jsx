@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import PasswordInputField from '../../authentication/PasswordInputField'
 import AuthButton from '../../authentication/AuthButton'
-import axios from 'axios'
+import api from '../../../service/api'
+import { useContext } from 'react'
+import { AuthContext } from '../../../context/AuthContext'
 
 const ChangePassword = () => {
     const [formData, setFormData]=useState({
@@ -9,9 +11,9 @@ const ChangePassword = () => {
         new:"",
         confirm:""
     })
+    const {setUser}=useContext(AuthContext)
     const [error,setError]=useState("")
     const [success,setSuccess]=useState("")
-    const API_BASE_URL=import.meta.env.VITE_API_BASE_URL
     const change=(e)=>{
         setFormData({
             ...formData,
@@ -36,17 +38,13 @@ const ChangePassword = () => {
         setSuccess("")
         if(!validatedata()) return
         try {
-            const res=await axios.patch(
-                `${API_BASE_URL}/user/change-password`,
+            const res=await api.patch(
+                '/user/change-password',
                 {
                     oldpassword:formData.current,
                     newpassword:formData.new,
                     confirmpassword:formData.confirm
-                },
-                {
-                    withCredentials:true
-                }
-            )
+                })
             setFormData(
                 {
                     current:"",
@@ -56,6 +54,10 @@ const ChangePassword = () => {
             )
             setSuccess(res.data?.message || "Password changes successfully")
         } catch (error) {
+            if(error.response?.status===401){
+                setUser(null)
+                return
+            }
             setError(error.response?.data?.message || "something went wrong" )
         }
     }

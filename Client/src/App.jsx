@@ -6,12 +6,14 @@ import Login from "./pages/Login.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import VerifyOtp from "./pages/VerifyOtp.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
-import Dashboard from "./pages/Dashboard.jsx";
 import ProtectedRoute from "./protectedRoute/ProtectedRoute.jsx";
 import Settings from "./components/dashboard/settings/Settings.jsx";
 import ChangePassword from "./components/dashboard/settings/ChangePassword.jsx";
 import SettingsIndex from "./components/dashboard/settings/SettingsIndex.jsx";
 import UpdateProfile from "./components/dashboard/settings/UpdateProfile.jsx";
+import DashboardLayout from "./pages/DashboardLayout.jsx";
+import DashBoard from "./components/dashboard/dashboard/DashBoard.jsx";
+import ProjectDetail from "./components/dashboard/dashboard/ProjectDetail.jsx";
 
 const App = () => {
   return (
@@ -30,9 +32,11 @@ const App = () => {
             <Route path="/resetpassword" element={<ResetPassword/>}></Route>
             <Route path="/dashboard" element={
               <ProtectedRoute>
-                <Dashboard/>
+                <DashboardLayout/>
               </ProtectedRoute>
             }>
+              <Route index element={<DashBoard/>}></Route>
+              <Route path="project/:id" element={<ProjectDetail/>}></Route>
               <Route path="profile" element={<UpdateProfile/>}></Route>
               <Route path="settings" element={<Settings/>}>
                 <Route index element={<SettingsIndex/>}/>

@@ -1,15 +1,14 @@
-import axios from "axios";
 import React from "react";
 import { useContext } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import api from "../../service/api";
 
 const DeleteUser=({close})=>{
     const [error,setError]=useState("")
-    const API_BASE_URL=import.meta.env.VITE_API_BASE_URL
-    const navigate=useNavigate()
     const {setUser}=useContext(AuthContext)
+    const navigate=useNavigate()
     const cancle=()=>{
         close()
     }
@@ -17,15 +16,13 @@ const DeleteUser=({close})=>{
         e.preventDefault()
         setError("")
         try {
-            await axios.delete(
-                `${API_BASE_URL}/user/delete-user`,
-                {
-                    withCredentials:true
-                }
-            )
-
+            await api.delete('/user/delete-user')
             setUser(null)
         } catch (error) {
+            if (error.response?.status === 401) {
+            setUser(null);
+            return;
+        }
             setError(error.response?.data?.message || "something went wrong")
         }
     }

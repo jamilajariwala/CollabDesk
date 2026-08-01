@@ -9,12 +9,12 @@ const refreshAccessToken=async(req,res)=>{
     try{
         const token=req.cookies?.refreshtoken || req.header('Authorization')?.replace('Bearer ','')
         if (!token){
-            throw new ApiError(400,"unauthorized request")
+            throw new ApiError(401,"unauthorized request")
         }
         const decodedtoken=jwt.verify(token,process.env.REFRESH_TOKEN_SECRET)
         const user=await User.findById(decodedtoken?._id)
         if(!user){
-            throw new ApiError(400,"token expired")
+            throw new ApiError(401,"token expired")
         }
 
         if (token !== user.refreshToken) {
@@ -28,7 +28,9 @@ const refreshAccessToken=async(req,res)=>{
 
         const option={
             httpOnly:true,
-            secure:true
+            secure:true,
+            sameSite:process.env.NODE_ENV ===   "production"?"none":"lax"
+
         }
 
         return res
@@ -127,7 +129,7 @@ const login=asyncHandler(async(req,res)=>{
     const options={
         httpOnly:true,
         secure:true,
-        sameSite:process.env.NODE_ENV == "Production"?"none":"lax"
+        sameSite:process.env.NODE_ENV === "production"?"none":"lax"
     }
 
     return res
@@ -156,7 +158,8 @@ const logout=asyncHandler(async(req,res)=>{
 
     const options={
         httpOnly:true,
-        secure:true
+        secure:true,
+        sameSite:process.env.NODE_ENV === "production"?"none":"lax"
     }
 
     return res
@@ -350,7 +353,8 @@ const deleteUser=asyncHandler(async(req,res)=>{
     )
     const options={
         httpOnly:true,
-        secure:true
+        secure:true,
+        sameSite:process.env.NODE_ENV === "production"?"none":"lax"
     }
     return res
     .status(200)
