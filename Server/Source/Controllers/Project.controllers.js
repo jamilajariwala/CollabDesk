@@ -112,7 +112,7 @@ const updateProject=asyncHandler(async(req,res)=>{
 
   if(title != undefined) project.title=title
   if(desc != undefined) project.description=desc
-  if(status != undefined) project.status=status
+  if(status != undefined) project.projectStatus=status
   if(start != undefined) project.startDate=start
   if(end != undefined) project.endDate=end
 

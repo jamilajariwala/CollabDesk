@@ -33,7 +33,7 @@ const DeleteUser=({close})=>{
                                 <div className=' px-6 py-4 flex justify-center items-center flex-col gap-4 w-full'>
                                     <div className="text-center">
                                         <p className='font-medium text-xl md:text-2xl text-red-400'>Delete your account</p>
-                                    <p className='text-base text-[#6D8196]'>Are your sure you want to deletet account?</p>
+                                    <p className='text-base text-[#6D8196]'>Are your sure you want to delete account?</p>
                                     </div>
                                 <form onSubmit={(e)=>{
                                           onsubmit(e)
