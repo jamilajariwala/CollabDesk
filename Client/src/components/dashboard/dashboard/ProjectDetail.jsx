@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, Outlet, useNavigate, useParams } from 'react-router-dom'
 import { AuthContext } from '../../../context/AuthContext'
 import {ArrowLeft } from 'lucide-react'
 import api from '../../../service/api'
@@ -60,6 +60,18 @@ if (loading) return <div className="p-6">Loading project details...</div>
         <ProjectDetailCard title="Start Date" detail={projectdetail.startDate.split('T')[0]}/>
         <ProjectDetailCard title="End Date" detail={projectdetail.endDate.split('T')[0]}/>
         <ProjectDetailCard title="Inivitation Status" detail={projectdetail.inviteStatus}/>
+      </div>
+
+      <div>
+        <ul className='flex list-none gap-20 p-4 text-lg tracking-wide'>
+          <li className='cursor-pointer transition-all duration-200 hover:[text-shadow:_0.5px_0_0_currentColor]'>Overview</li>
+          <li className='cursor-pointer transition-all duration-200 hover:[text-shadow:_0.5px_0_0_currentColor]'>Milestones</li>
+          <li className='cursor-pointer transition-all duration-200 hover:[text-shadow:_0.5px_0_0_currentColor]'><Link to={`/dashboard/project/${id}/client`}>Client</Link></li>
+        </ul>
+        <hr className='text-[#4A4A4A]/40' />
+      </div>
+      <div>
+        <Outlet/>
       </div>
       {
         editbtnclick && (

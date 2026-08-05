@@ -14,6 +14,8 @@ import UpdateProfile from "./components/dashboard/settings/UpdateProfile.jsx";
 import DashboardLayout from "./pages/DashboardLayout.jsx";
 import DashBoard from "./components/dashboard/dashboard/DashBoard.jsx";
 import ProjectDetail from "./components/dashboard/dashboard/ProjectDetail.jsx";
+import InviteClient from "./components/dashboard/dashboard/client/InviteClient.jsx";
+import InvitationCard from "./components/dashboard/dashboard/client/InvitationCard.jsx";
 
 const App = () => {
   return (
@@ -30,13 +32,16 @@ const App = () => {
             <Route path="/forgotpassword" element={<ForgotPassword/>}></Route>
             <Route path="/verifyOtp" element={<VerifyOtp/>}></Route>
             <Route path="/resetpassword" element={<ResetPassword/>}></Route>
+            <Route path='/invite/:token' element={<InvitationCard/>}></Route>
             <Route path="/dashboard" element={
               <ProtectedRoute>
                 <DashboardLayout/>
               </ProtectedRoute>
             }>
               <Route index element={<DashBoard/>}></Route>
-              <Route path="project/:id" element={<ProjectDetail/>}></Route>
+              <Route path="project/:id" element={<ProjectDetail/>}>
+                <Route path="client" element={<InviteClient/>}></Route>
+              </Route>
               <Route path="profile" element={<UpdateProfile/>}></Route>
               <Route path="settings" element={<Settings/>}>
                 <Route index element={<SettingsIndex/>}/>

@@ -17,10 +17,12 @@ app.use(cors({
 import userRouter from './Routers/user.route.js'
 import projectRouter from './Routers/project.route.js'
 import calculation from './Routers/calculation.route.js'
+import invite from './Routers/invite.route.js'
 
 app.use('/api/v1/user',userRouter)
 app.use('/api/v1/project',projectRouter)
 app.use('/api/v1/calculate',calculation)
+app.use('/api/v1/invite',invite)
 
 app.use((err, req, res, next) => {
     res.status(err.statuscode || 500).json({

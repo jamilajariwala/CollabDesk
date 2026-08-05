@@ -16,11 +16,10 @@ const projectSchema=new mongoose.Schema({
         ref:"User",
         required:true
     },
-    client:{
+    client:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",
-        default:null
-    },
+    }],
     inviteStatus:{
         type:String,
         enum:["not invited", "pending", "accepted"],
