@@ -63,9 +63,9 @@ if (loading) return <div className="p-6">Loading project details...</div>
       </div>
 
       <div>
-        <ul className='flex list-none gap-20 p-4 text-lg tracking-wide'>
-          <li className='cursor-pointer transition-all duration-200 hover:[text-shadow:_0.5px_0_0_currentColor]'>Overview</li>
-          <li className='cursor-pointer transition-all duration-200 hover:[text-shadow:_0.5px_0_0_currentColor]'>Milestones</li>
+        <ul className='flex list-none gap-20 pb-4 text-lg tracking-wide'>
+          {/* <li className='cursor-pointer transition-all duration-200 hover:[text-shadow:_0.5px_0_0_currentColor]'>Overview</li> */}
+          <li className='cursor-pointer transition-all duration-200 hover:[text-shadow:_0.5px_0_0_currentColor]'><Link to={`/dashboard/project/${id}/milestone`}>Milestones</Link></li>
           <li className='cursor-pointer transition-all duration-200 hover:[text-shadow:_0.5px_0_0_currentColor]'><Link to={`/dashboard/project/${id}/client`}>Client</Link></li>
         </ul>
         <hr className='text-[#4A4A4A]/40' />
@@ -76,7 +76,7 @@ if (loading) return <div className="p-6">Loading project details...</div>
       {
         editbtnclick && (
          <EditProject prjtId={id} project={projectdetail} fetchdata={()=>{
-          fetchDetail}} close={()=>{
+          fetchDetail()}} close={()=>{
           setEditBtnclick(false)
          }}/>
         )

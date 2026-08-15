@@ -4,7 +4,7 @@ import AuthButton from './AuthButton'
 import PasswordInputField from './PasswordInputField'
 import { CircleUser,Mail,UserRound  } from 'lucide-react';
 import axios from 'axios'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 const AuthCard = () => {
 
@@ -19,6 +19,8 @@ const AuthCard = () => {
     const [error ,setError]=useState("")
     const [success,setSuccess]=useState("")
     const navigate=useNavigate()
+    const [search]=useSearchParams()
+    const token=search.get("invite")
     const onChange=(e)=>{
         setformData({
             ...formData,
@@ -74,9 +76,12 @@ const AuthCard = () => {
             })
 
             setTimeout(()=>{
+                if(token){
+                    navigate(`/login?invite=${token}`)
+                }else{
                 navigate(
                     '/login'
-                )
+                )}
             },1000)
         }catch(e){
              setError(
@@ -147,10 +152,15 @@ const AuthCard = () => {
                />
                 <AuthButton button="Sign Up"/>
                 </form>
-                <div className='text-center'>
+                {
+                    !token && (
+                     <div className='text-center'>
                     <p className='text-base'>Already have an account?<span className='text-[#0A66C2] cursor-pointer'><Link to="/login"> Log in</Link></span>
                     </p>
                 </div>
+                    )
+                }
+               
             </div>
         </div>
   )

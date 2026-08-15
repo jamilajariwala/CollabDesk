@@ -19,6 +19,8 @@ const InviteClient = () => {
   const [success,setSuccess]=useState("")
   const submit=async(e)=>{
     e.preventDefault()
+    setError("")
+    setSuccess("")
     try {
       const response=await api.post(
       `/invite/${id}`,

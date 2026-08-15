@@ -16,6 +16,7 @@ import DashBoard from "./components/dashboard/dashboard/DashBoard.jsx";
 import ProjectDetail from "./components/dashboard/dashboard/ProjectDetail.jsx";
 import InviteClient from "./components/dashboard/dashboard/client/InviteClient.jsx";
 import InvitationCard from "./components/dashboard/dashboard/client/InvitationCard.jsx";
+import Milestone from "./components/dashboard/dashboard/milestone/Milestone.jsx";
 
 const App = () => {
   return (
@@ -41,6 +42,7 @@ const App = () => {
               <Route index element={<DashBoard/>}></Route>
               <Route path="project/:id" element={<ProjectDetail/>}>
                 <Route path="client" element={<InviteClient/>}></Route>
+                <Route path="milestone" element={<Milestone/>}></Route>
               </Route>
               <Route path="profile" element={<UpdateProfile/>}></Route>
               <Route path="settings" element={<Settings/>}>

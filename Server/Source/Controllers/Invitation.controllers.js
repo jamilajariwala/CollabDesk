@@ -82,11 +82,11 @@ const sendInvitation=asyncHandler(async(req,res)=>{
 })
 
 const getInvitationInfo=asyncHandler(async(req,res)=>{
-    const token = req.params
+    const {token} = req.params
 
     const invite=await Invite.findOne({
         token:token
-    }).populate("projectId, title description").populate("owner, fullname email")
+    }).populate("projectId" , "title description").populate("owner" , "fullName email")
 
     if(!invite){
         throw new ApiError(400,"invitation not found")
@@ -103,7 +103,43 @@ const getInvitationInfo=asyncHandler(async(req,res)=>{
         new ApiResponse(200,{invite},"Invitation fetched successfully")
     )
 })
+
+const acceptInvitation=asyncHandler(async(req,res)=>{
+    const {token}=req.params
+    if(!token){
+        throw new ApiError(400,"token not found")
+    }
+    const invite=await Invite.findOne({
+        token:token
+    })
+    if(!invite){
+        throw new ApiError(400,"invite not found")
+    }
+    if (invite.status==="accepted")
+    {
+        throw new ApiError(400,"invite already accepted")
+    }
+    if(invite.expiresAt < Date.now()){
+        invite.status="expired"
+        await invite.save()
+        throw new ApiError("invite expired")
+    }
+    const project=await Project.findById(invite.projectId)
+    if(!project){
+        throw new ApiError(400,"project not found")
+    }
+    project.client.push(req.user._id)
+    await project.save()
+
+    invite.status = "accepted";
+    await invite.save();
+
+    return res.status(200).json(
+        new ApiResponse(200, {}, "Invitation accepted successfully")
+    );
+})
 export {
     sendInvitation,
-    getInvitationInfo
+    getInvitationInfo,
+    acceptInvitation
 }

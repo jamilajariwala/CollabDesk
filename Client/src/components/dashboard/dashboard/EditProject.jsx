@@ -6,6 +6,7 @@ const EditProject = ({prjtId,project,fetchdata,close}) => {
     const {setUser}=useContext(AuthContext)
     const [error,setError]=useState("")
     const [success,setSuccess]=useState("")
+    const [loading,setLoading]=useState(false)
     const [formdata,setFormdata]=useState({
         title:"",
         desc:"",
@@ -13,8 +14,6 @@ const EditProject = ({prjtId,project,fetchdata,close}) => {
         start:"",
         end:""
     })
-    console.log(formdata);
-    
 const change=(e)=>{
     setFormdata({
         ...formdata,[e.target.name] : e.target.value
@@ -24,6 +23,7 @@ const change=(e)=>{
 }
 const submit=async(e)=>{
     e.preventDefault()
+    setLoading(true)
 
     try {
         const res=await api.patch(
@@ -38,10 +38,7 @@ const submit=async(e)=>{
         )
         
         setSuccess("project created successfully")
-        setTimeout(
-            ()=>{
-                close()
-            },1000)
+        close()
         await fetchdata()
         
     } catch (error) {
@@ -50,6 +47,8 @@ const submit=async(e)=>{
             return
         }
         setError(error.response?.data?.message || "something went wrong")
+    }finally{
+        setLoading(false)
     }
 }
 useEffect(()=>{
@@ -129,8 +128,13 @@ useEffect(()=>{
                          }} />
                  </div>
                  <div className='flex flex-row gap-3 justify-end'>
-                     <button type="submit" className='bg-[#6D8196] px-6 py-2 text-md w-full sm:max-w-sm rounded-lg text-white hover:bg-[#5C7087] hover:shadow-md transition-all duration-200 active:scale-95'>
-                         Edit Project
+                     <button type="submit" className={`bg-[#6D8196] px-6 py-2 text-md w-full sm:max-w-sm rounded-lg text-white hover:bg-[#5C7087] hover:shadow-md transition-all duration-200 active:scale-95 ${
+                         loading
+            ? "opacity-60 cursor-not-allowed"
+            : "hover:bg-[#5C7087] hover:shadow-md active:scale-95"
+
+                     }`}>
+                        {loading ? "updating...":"Edit Project"}
                      </button>
                      <button type="button" className='bg-white px-6 py-2 text-md w-full sm:max-w-sm rounded-lg text-[#6D8196] border border-[#6D8196] hover:bg-[#6D8196] hover:text-white hover:shadow-md transition-all duration-200 active:scale-95'
                      onClick={()=>{

@@ -4,7 +4,7 @@ import InputField from "./InputField";
 import PasswordInputField from "./PasswordInputField";
 import { CircleUser } from "lucide-react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 
 const LoginCard=()=>{
@@ -17,6 +17,8 @@ const LoginCard=()=>{
     const [success,setSuccess]=useState("")
     const API_BASE_URL=import.meta.env.VITE_API_BASE_URL
     const navigate=useNavigate()
+    const [search]=useSearchParams()
+    const inviteToken=search.get("invite")
     const onChange=(e)=>{
         setFormData({
             ...formData,
@@ -47,17 +49,23 @@ const LoginCard=()=>{
                 usernm:"",
                 password:""
             })
-            setUser(res?.data?.data)
+            setUser(res?.data?.data)   
+            if(inviteToken){
+                navigate(`/invite/${inviteToken}`)
+            }else{
             navigate(
                 '/dashboard'
-            )
+            )}
         } catch (e) {
             setError(e?.response?.data?.message || "something went wrong")
             if (e.response?.data?.message == "user does not exist"){
             setTimeout(() => {
+                if(inviteToken){
+                    navigate(`/register?invite=${inviteToken}`)
+                }else{
                 navigate(
                     '/register'
-                )
+                )}
             }, 2000);
         }
         }
@@ -104,10 +112,14 @@ const LoginCard=()=>{
                 <p className="text-base text-[#6D8196]"><Link to="/forgotpassword">Forgot Password?</Link></p>
                 <AuthButton button="Log In"/>
                 </form>
-                <div className='text-center'>
+                {
+                    !inviteToken && (
+                        <div className='text-center'>
                     <p className='text-base'>Don't have an account?<span className='text-[#0A66C2] cursor-pointer'><Link to="/register"> Sign up</Link></span>
                     </p>
                 </div>
+                    )
+                }
             </div>
         </div>
     )
