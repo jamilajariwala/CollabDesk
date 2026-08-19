@@ -4,6 +4,7 @@ import { Project } from "../Models/Project.models.js";
 import ApiError from "../Utils/ApiError.js";
 import ApiResponse from "../Utils/ApiResponse.js";
 import asyncHandler from "../Utils/asynchandler.js";
+import { Task } from "../Models/Task.models.js";
 
 const createMilestone=asyncHandler(async(req,res)=>{
     const {title,desc,due}=req.body
@@ -22,6 +23,7 @@ const createMilestone=asyncHandler(async(req,res)=>{
         projectId:prjtId,
         owner:req.user._id
     })
+    
     const getmilestone=await Milestone.findById(milestone._id)
     if(!getmilestone) throw new ApiError(500,"Something went wrong while creating milestone")
     
@@ -111,6 +113,9 @@ const deleteMilestone=asyncHandler(async(req,res)=>{
         throw new ApiError(403, "Not authorized")
     }
     
+    await Task.deleteMany({
+        milestoneId:mileId
+    })
     await milestone.deleteOne()
 
     return res.status(200).json(

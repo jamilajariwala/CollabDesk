@@ -73,11 +73,18 @@ const sendInvitation=asyncHandler(async(req,res)=>{
         await Invite.findByIdAndDelete(invitation._id)
         throw new ApiError(500,"something went wrong whle sending invitation")
     }
-
+    const updatedProject=await Project.findByIdAndUpdate(
+        projectId,
+        {
+            inviteStatus:"Invited"
+        },
+    {
+        new:true
+    })
     return res
     .status(201)
     .json(
-        new ApiResponse(201,{invitation},"invitation send successfully")
+        new ApiResponse(201,{invitation,updatedProject},"invitation send successfully")
     )
 })
 
@@ -124,7 +131,9 @@ const acceptInvitation=asyncHandler(async(req,res)=>{
         await invite.save()
         throw new ApiError("invite expired")
     }
-    const project=await Project.findById(invite.projectId)
+    const project=await Project.findByIdAndUpdate(invite.projectId,{
+        inviteStatus:"Accepted"
+    })
     if(!project){
         throw new ApiError(400,"project not found")
     }

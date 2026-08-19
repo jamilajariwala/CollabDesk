@@ -53,8 +53,14 @@ const DashBoard = () => {
             </div>
             <div className='grid grid-cols-2 md:grid-cols-4 gap-2'>
                 <StateCard
-                    title="My Project"
+                    title="Total Project"
                     cal={calculation.totalOwnProject} />
+                <StateCard title="Total Milestones"
+                cal={calculation.milestones}/>
+                <StateCard title="Pending Review"
+                cal={calculation.taskInReview}/>
+                <StateCard title="Completed Project"
+                cal={calculation.totalFinishProject}/>
             </div>
             <div className='bg-white/60 p-5 flex flex-col gap-4 rounded-lg shadow-lg backdrop-blur-lg border-gray-200 '>
                 <p className='text-xl font-bold text-[#4A4A4A]'>My Projects</p>

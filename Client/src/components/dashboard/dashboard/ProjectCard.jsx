@@ -3,7 +3,11 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 const ProjectCard = ({item}) => {
-  
+  const statusColors = {
+      Planning: "bg-gray-200 text-gray-700",
+      In_Progress: "bg-blue-100 text-blue-700",
+      Completed: "bg-green-100 text-green-700"
+}
 
   return (
                <Link to={`/dashboard/project/${item._id}`}>
@@ -13,7 +17,7 @@ const ProjectCard = ({item}) => {
                     <p className='text-sm text-[#6D8196]  '>{item.description}</p>
                 </div>
                 <div>
-                    <p className='border px-4 py-1 rounded-lg w-fit'>{item.projectStatus}</p>
+                    <p className={`px-4 py-1 rounded-lg font-medium ${statusColors[item.projectStatus]}`}>{item.projectStatus}</p>
                 </div>
                 <div>
                     <p className='text-[#6D8196] text-sm font-medium'>{item.endDate.split('T')[0]}</p>

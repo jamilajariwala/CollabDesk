@@ -4,6 +4,8 @@ import { User } from '../Models/User.models.js'
 import { Project } from "../Models/Project.models.js";
 import ApiResponse from "../Utils/ApiResponse.js";
 import mongoose from "mongoose";
+import { Milestone } from "../Models/Milestone.models.js";
+import { Task } from "../Models/Task.models.js";
 
 const createProject=asyncHandler(async(req,res)=>{
   const {title,desc,start,end}=req.body
@@ -94,7 +96,7 @@ const getOneProject=asyncHandler(async(req,res)=>{
 })
 
 const updateProject=asyncHandler(async(req,res)=>{
-  const {title,desc,status,start,end}=req.body
+  const {title,desc,start,end}=req.body
   const {projectId}=req.params
 
   if (!mongoose.Types.ObjectId.isValid(projectId))
@@ -112,7 +114,6 @@ const updateProject=asyncHandler(async(req,res)=>{
 
   if(title != undefined) project.title=title
   if(desc != undefined) project.description=desc
-  if(status != undefined) project.projectStatus=status
   if(start != undefined) project.startDate=start
   if(end != undefined) project.endDate=end
 
@@ -137,6 +138,12 @@ const deleteProject=asyncHandler(async(req,res)=>{
   if(!project){
     throw new ApiError(404,"project not found")
   }
+  await Milestone.deleteMany({
+    projectId:projectId
+  })
+  await Task.deleteMany({
+    projectId:projectId
+  })
   await project.deleteOne()
 
   return res

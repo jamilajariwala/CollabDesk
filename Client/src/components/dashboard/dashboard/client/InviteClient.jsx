@@ -6,10 +6,11 @@ import { useState } from 'react'
 import { useContext } from 'react'
 import { AuthContext } from '../../../../context/AuthContext'
 import api from '../../../../service/api'
-import { useParams } from 'react-router-dom'
+import { useOutletContext, useParams } from 'react-router-dom'
 
 const InviteClient = () => {
   const [email,setEmail]=useState("")
+  const {updateProjectClientInviteUI}=useOutletContext()
   const {id}=useParams()
   const change=(e)=>{
     setEmail(e.target.value)
@@ -29,8 +30,7 @@ const InviteClient = () => {
       }
       )
       setEmail("")
-      setSuccess(response.data.data.message)
-
+      updateProjectClientInviteUI(id,response.data.data.updatedProject.inviteStatus)
     } catch (error) {
       if(error.response?.status===401){
         setUser(null)

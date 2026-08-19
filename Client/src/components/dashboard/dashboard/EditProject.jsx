@@ -10,7 +10,6 @@ const EditProject = ({prjtId,project,fetchdata,close}) => {
     const [formdata,setFormdata]=useState({
         title:"",
         desc:"",
-        status:"Planning",
         start:"",
         end:""
     })
@@ -31,7 +30,6 @@ const submit=async(e)=>{
             {
                 title:formdata.title,
                 desc:formdata.desc,
-                status:formdata.status,
                 start:formdata.start,
                 end:formdata.end
             }
@@ -56,7 +54,6 @@ useEffect(()=>{
         setFormdata({
             title:project.title,
             desc:project.description,
-            status:project.projectStatus,
             start:project.startDate.split('T')[0],
             end:project.endDate.split('T')[0]
         })
@@ -97,17 +94,6 @@ useEffect(()=>{
                  onChange={(e)=>{
                     change(e)
                  }}></textarea>
-                  </div>
-                  <div className='flex flex-col gap-1'>
-                     <label className='text-md' >Status</label>
-                     <select name="status" value={formdata.status} onChange={(e)=>{
-                        change(e)
-                     }} className='border border-[#6D8196]/20 shadow-sm rounded-lg text-md pl-4 pr-4 py-2 w-full sm:w-sm text-[#6D8196] placeholder:text-[#6D8196] focus:outline-none focus:ring-1 focus:border-blue-500' placeholder='Enter description'>
-                        <option value="Planning">Planning</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Cancelled">Cancelled</option>
-                     </select>
                   </div>
                   <div className='flex flex-col gap-1'>
                      <label className='text-md' >Start Date</label>

@@ -8,12 +8,32 @@ import EditProject from './EditProject'
 import DeleteProject from './DeleteProject'
 
 const ProjectDetail = () => {
+   const statusColors = {
+      Planning: "bg-gray-200 text-gray-700",
+      In_Progress: "bg-blue-100 text-blue-700",
+      Completed: "bg-green-100 text-green-700"
+}
+const inviteColor = {
+      not_invited: "bg-slate-300 text-slate-700",
+      Invited: "bg-violet-100 text-violet-700",
+      Accepted: "bg-teal-100 text-teal-700"
+}
   const {id}=useParams()
   const [projectdetail,setProjectDetail]=useState(null)
   const [error,setError]=useState("")
   const {setUser}=useContext(AuthContext)
   const [loading,setLoading]=useState(true)
   const navigate=useNavigate()
+  const updateProjectStatusUI=(projectId,newstatus)=>{
+    setProjectDetail((prev)=>prev._id==projectId?{
+      ...prev,projectStatus:newstatus
+    }:prev)
+  }
+  const updateProjectClientInviteUI=(projectId,status)=>{
+    setProjectDetail((prev)=>prev._id == projectId?{
+      ...prev,inviteStatus:status
+    }:prev)
+  }
   const fetchDetail=async()=>{
     try {
       setLoading(true)
@@ -56,10 +76,10 @@ if (loading) return <div className="p-6">Loading project details...</div>
         </div>
       </div>
       <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
-        <ProjectDetailCard title="Project Status" detail={projectdetail.projectStatus}/>
-        <ProjectDetailCard title="Start Date" detail={projectdetail.startDate.split('T')[0]}/>
-        <ProjectDetailCard title="End Date" detail={projectdetail.endDate.split('T')[0]}/>
-        <ProjectDetailCard title="Inivitation Status" detail={projectdetail.inviteStatus}/>
+        <ProjectDetailCard title="Project Status" detail={projectdetail.projectStatus} statusColors={statusColors[projectdetail.projectStatus]}/>
+        <ProjectDetailCard title="Start Date" detail={projectdetail.startDate.split('T')[0]} start={'bg-sky-100 text-sky-700'}/>
+        <ProjectDetailCard title="End Date" detail={projectdetail.endDate.split('T')[0]} end={'bg-orange-100 text-orange-700'}/>
+        <ProjectDetailCard title="Inivitation Status" detail={projectdetail.inviteStatus} inviteColor={inviteColor[projectdetail.inviteStatus]}/>
       </div>
 
       <div>
@@ -71,7 +91,7 @@ if (loading) return <div className="p-6">Loading project details...</div>
         <hr className='text-[#4A4A4A]/40' />
       </div>
       <div>
-        <Outlet/>
+        <Outlet context={{updateProjectStatusUI,updateProjectClientInviteUI}}/>
       </div>
       {
         editbtnclick && (

@@ -22,12 +22,12 @@ const projectSchema=new mongoose.Schema({
     }],
     inviteStatus:{
         type:String,
-        enum:["not invited", "pending", "accepted"],
-        default:"not invited"
+        enum:["not_invited", "Invited", "Accepted"],
+        default:"not_invited"
     },
     projectStatus:{
         type:String,
-        enum:["Planning","In Progress","Completed","Cancelled"],
+        enum:["Planning","In_Progress","Completed"],
         default:"Planning"
     },
     startDate:{
