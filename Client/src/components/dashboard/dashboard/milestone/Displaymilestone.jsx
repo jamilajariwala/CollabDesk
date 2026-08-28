@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Editmilestone from './Editmilestone'
 import Deletemilestone from './Deletemilestone'
 
-const Displaymilestone = ({item,prjtId,fetchMilestone,onselectedmilestone,selectedMilestone,fetchTask}) => {
+const Displaymilestone = ({item,prjtId,fetchMilestone,onselectedmilestone,selectedMilestone,fetchTask,isowner}) => {
     const statusColors = {
       pending: "bg-gray-200 text-grey-700",
       in_progress: "bg-blue-100 text-blue-700",
@@ -26,10 +26,14 @@ const Displaymilestone = ({item,prjtId,fetchMilestone,onselectedmilestone,select
             <div className='flex justify-between items-center'>
                 <h2 className='text-lg font-bold text-[#4a4a4a] '>{item.title}</h2>
             <div>
-                <Ellipsis onClick={(e)=>{
+                {
+                  isowner && (
+                    <Ellipsis onClick={(e)=>{
                   e.stopPropagation()
                 setDotsclick((prev)=>!prev)
             }}/>
+                  )
+                }
             {
                 dotsclick &&(
                 <div className='absolute right-0 w-32 bg-white rounded-md shadow-lg py-1'>

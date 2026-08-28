@@ -12,11 +12,13 @@ import ChangePassword from "./components/dashboard/settings/ChangePassword.jsx";
 import SettingsIndex from "./components/dashboard/settings/SettingsIndex.jsx";
 import UpdateProfile from "./components/dashboard/settings/UpdateProfile.jsx";
 import DashboardLayout from "./pages/DashboardLayout.jsx";
-import DashBoard from "./components/dashboard/dashboard/DashBoard.jsx";
 import ProjectDetail from "./components/dashboard/dashboard/ProjectDetail.jsx";
 import InviteClient from "./components/dashboard/dashboard/client/InviteClient.jsx";
 import InvitationCard from "./components/dashboard/dashboard/client/InvitationCard.jsx";
 import Milestone from "./components/dashboard/dashboard/milestone/Milestone.jsx";
+import DeliverablesCard from "./components/dashboard/dashboard/deliverables/DeliverablesCard.jsx";
+import Project from "./components/dashboard/dashboard/Project.jsx";
+import Dashboard from "./components/dashboard/dashboard/DashBoard.jsx";
 
 const App = () => {
   return (
@@ -39,18 +41,22 @@ const App = () => {
                 <DashboardLayout/>
               </ProtectedRoute>
             }>
-              <Route index element={<DashBoard/>}></Route>
+              <Route index element={<Project/>}></Route>
+              <Route path='projects' element={<Dashboard/>}></Route>
               <Route path="project/:id" element={<ProjectDetail/>}>
                 <Route path="client" element={<InviteClient/>}></Route>
                 <Route path="milestone" element={<Milestone/>}></Route>
               </Route>
+              <Route path="project/:projectId/milestone/:mileId/task/:taskId/deliverables" element={<DeliverablesCard/>}></Route>
               <Route path="profile" element={<UpdateProfile/>}></Route>
               <Route path="settings" element={<Settings/>}>
-                <Route index element={<SettingsIndex/>}/>
+                <Route index element={<SettingsIndex/>}/>   
                 <Route path="updateprofile" element={<UpdateProfile/>}/>
                 <Route path="changepassword" element={<ChangePassword/>}/>
                 </Route>
               </Route>
+
+              
           </Routes>
         </div>
     </div>

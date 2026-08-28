@@ -5,13 +5,20 @@ import EditTask from './EditTask'
 import DeleteTask from './DeleteTask'
 import api from '../../../../service/api'
 import { AuthContext } from '../../../../context/AuthContext'
+import { Link } from 'react-router-dom'
 
-const Displaytask = ({item,fetchTask,updateTaskStatusInUI,updateMilestoneStatusUI,updateProjectStatusUI}) => {
+const Displaytask = ({item,fetchTask,updateTaskStatusInUI,updateMilestoneStatusUI,updateProjectStatusUI,isowner}) => {
     const statusColors = {
       todo: "bg-gray-200 text-gray-700",
       in_progress: "bg-blue-100 text-blue-700",
       in_review: "bg-yellow-100 text-yellow-700",
       completed: "bg-green-100 text-green-700"
+}
+ const approvalColors = {
+      not_requested: "bg-gray-100 text-gray-700 border border-gray-200",
+      pending: "bg-amber-100 text-amber-800 border border-amber-200",
+      changes_requested: "bg-rose-100 text-rose-700 border border-rose-200",
+      approved: "bg-emerald-100 text-emerald-800 border border-emerald-200"
 }
     const [dotsclick,setDotsclick]=useState(false)
     const [editbtn,setEditbtn]=useState(false)
@@ -36,9 +43,6 @@ const Displaytask = ({item,fetchTask,updateTaskStatusInUI,updateMilestoneStatusU
         updateMilestoneStatusUI(updatemilestone._id,updatemilestone.status)
         updateProjectStatusUI(updateproject._id,updateproject.projectStatus)
       } catch (error) {
-        console.log("Status update error:", error)
-  console.log("Response:", error.response?.data)
-  console.log("Message:", error.message)
         if(error.response?.status === 401){
                 setUser(null)
                 return
@@ -48,7 +52,7 @@ const Displaytask = ({item,fetchTask,updateTaskStatusInUI,updateMilestoneStatusU
     }
   return (
     <>
-    <div className='py-2 px-2 rounded-lg transition-all duration-200 flex flex-col gap-2'>
+    <div className='py-2 px-2 rounded-lg transition-all duration-200 flex flex-col gap-2 hover:bg-[#dec942]/20'>
        {
              error && (
                  <p className="text-red-500 text-sm text-center max-w-sm">{error}</p>
@@ -58,19 +62,25 @@ const Displaytask = ({item,fetchTask,updateTaskStatusInUI,updateMilestoneStatusU
               <div className='flex items-center justify-center gap-2'>
                 <h2 className='text-lg font-bold text-[#4a4a4a] '>{item.title}</h2>
                 <p className={`text-md px-4 py-1 rounded-full font-medium ${statusColors[item.status]}`}>{item.status}</p>
-                 <select name="status" value={item.status} onChange={(e)=>{
+                 {
+                  isowner && (
+                    <select name="status" value={item.status} onChange={(e)=>{
                 change(e)
               }} className='cursor-pointer rounded-lg border border-[#CBCBCB] bg-white px-3 py-1.5 text-sm font-medium text-[#4A4A4A] shadow-sm outline-none transition-all duration-200 hover:border-[#6D8196] focus:border-[#6D8196] focus:ring-2 focus:ring-[#6D8196]/20' >
                 <option value="todo">todo</option>
                 <option value="in_progress">in_progress</option>
-                <option value="in_review">in_review</option>
+                 <option value="in_review">in_review</option> 
                 <option value="completed">completed</option>
               </select>
+                  )
+                 }
               </div>
             <div>
-                <Ellipsis onClick={()=>{
+                {
+                  isowner && <Ellipsis onClick={()=>{
                 setDotsclick((prev)=>!prev)
             }}/>
+                }
             {
                 dotsclick &&(
                 <div className='absolute right-0 w-32 bg-white rounded-md shadow-lg py-1'>
@@ -99,12 +109,14 @@ const Displaytask = ({item,fetchTask,updateTaskStatusInUI,updateMilestoneStatusU
             }
             </div>    
             </div>
+            <Link to={`/dashboard/project/${prjtId}/milestone/${mileId}/task/${taskId}/deliverables`} state={{isowner}}>
             <p className='text-md text-[#6D8196]'>{item.description}</p>
             <p className='text-[#6D8196] text-md font-medium'>Due date: {item.dueDate.split('T')[0]}</p>
             <div>
-              <p className='text-md'>Approval: <span className='text-md px-4 py-1 w-fit rounded-full bg-[#fdde8d] '>{item.approval.status}</span></p>
+              <p className='text-md'>Approval: <span className={`text-md px-4 py-1 w-fit rounded-full ${approvalColors[item.approval.status]}`}>{item.approval.status}</span></p>
               <p className='text-md text-[#6D8196]'>{item.approval.requestedAt}</p>
             </div>
+            </Link>
         </div>
         {
             editbtn && (
@@ -116,6 +128,7 @@ const Displaytask = ({item,fetchTask,updateTaskStatusInUI,updateMilestoneStatusU
             <DeleteTask delbtn={setDelbtn} fetchTask={fetchTask} task={item}/>
           )
         }
+        
         </>
   )
 }

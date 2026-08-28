@@ -6,6 +6,7 @@ import asyncHandler from "../Utils/asynchandler.js";
 import crypto from "crypto"
 import sendMail from "../Utils/SendEmail.js";
 import ApiResponse from "../Utils/ApiResponse.js";
+import { Task } from "../Models/Task.models.js";
 
 const sendInvitation=asyncHandler(async(req,res)=>{
     const {email}=req.body
@@ -134,12 +135,24 @@ const acceptInvitation=asyncHandler(async(req,res)=>{
     const project=await Project.findByIdAndUpdate(invite.projectId,{
         inviteStatus:"Accepted"
     })
+   
     if(!project){
         throw new ApiError(400,"project not found")
     }
     project.client.push(req.user._id)
     await project.save()
 
+    // await Task.updateMany(
+    //     {
+    //         projectId: project._id
+    //     },
+    //     {
+    //         $set: {
+    //             client: req.user._id
+    //         }
+    //     }
+    // )
+    
     invite.status = "accepted";
     await invite.save();
 

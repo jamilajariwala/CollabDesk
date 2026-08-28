@@ -5,7 +5,7 @@ import api from "../../../../service/api";
 import { useEffect } from "react";
 import Displaytask from "./Displaytask";
 
-const TaskCard=({oncreattaskbtnclick,taskloading,displaytask,fetchTask,updateMilestoneStatusUI,updateTaskStatusInUI,updateProjectStatusUI})=>{
+const TaskCard=({oncreattaskbtnclick,taskloading,displaytask,fetchTask,updateMilestoneStatusUI,updateTaskStatusInUI,updateProjectStatusUI,isowner})=>{
     const [error,setError]=useState("")
     if(taskloading) return <div className="p-6">Loading task....</div>
     return (
@@ -14,7 +14,9 @@ const TaskCard=({oncreattaskbtnclick,taskloading,displaytask,fetchTask,updateMil
             <div> 
                 <h2 className='text-xl font-medium tracking-wide'>Tasks</h2>
             </div>
-            <div> 
+           {
+            isowner && (
+                 <div> 
                 <button className='text-white text-md bg-[#6D8196] px-4 py-2 rounded-lg flex flex-row gap-2 justify-center items-center hover:bg-[#5C7087] transition-all duration-200 cursor-pointer active:scale-95'
                 onClick={()=>{
                     oncreattaskbtnclick(true)
@@ -22,11 +24,13 @@ const TaskCard=({oncreattaskbtnclick,taskloading,displaytask,fetchTask,updateMil
                     <Plus size={18}  /> Create Task
                 </button>
             </div>
+            )
+           }
         </div>
-        <div>
+        <div className="flex flex-col  gap-10">
             {
                 displaytask.map((task)=>{
-                    return <Displaytask item={task} key={task._id} fetchTask={fetchTask} updateTaskStatusInUI={updateTaskStatusInUI} updateMilestoneStatusUI={updateMilestoneStatusUI} updateProjectStatusUI={updateProjectStatusUI}/>
+                    return <Displaytask item={task} key={task._id} fetchTask={fetchTask} updateTaskStatusInUI={updateTaskStatusInUI} updateMilestoneStatusUI={updateMilestoneStatusUI} updateProjectStatusUI={updateProjectStatusUI} isowner={isowner}/>
                 })
             }
         </div>

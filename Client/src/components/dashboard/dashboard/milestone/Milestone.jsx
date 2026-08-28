@@ -12,7 +12,7 @@ import TaskCard from '../task/TaskCard'
 import CreateTask from '../task/CreateTask'
 
 const Milestone = () => {
-    const {updateProjectStatusUI}=useOutletContext()
+    const {updateProjectStatusUI,isowner}=useOutletContext()
     const [btnclick,setBtnclick]=useState(false)
     const [creattaskbtnclick,setcreattaskbtnclick]=useState(false)
     const {id}=useParams()
@@ -100,20 +100,24 @@ if (loading) return <div className="p-6">Loading....</div>
             <div> 
                 <h2 className='text-xl font-medium tracking-wide'>Milestones</h2>
             </div>
-            <div> 
+            {
+                isowner && (
+                    <div> 
                 <button className='text-white text-md bg-[#6D8196] px-4 py-2 rounded-lg flex flex-row gap-2 justify-center items-center hover:bg-[#5C7087] transition-all duration-200 cursor-pointer active:scale-95' onClick={()=>{
                     setBtnclick(true)
                 }}>
                     <Plus size={18}  /> Create Milestone
                 </button>
             </div>
+                )
+            }
         </div>
         <div className='gap-2 flex flex-col'>
             {
                 displaymilestone?.map((milestone)=>{
                     return <Displaymilestone item={milestone} key={milestone._id} prjtId={id} fetchMilestone={()=>{
                     fetchMilestone()
-                }} onselectedmilestone={setSelectedmilestone} selectedMilestone={selectedmilestone} fetchTask={fetchTask}></Displaymilestone>
+                }} onselectedmilestone={setSelectedmilestone} selectedMilestone={selectedmilestone} fetchTask={fetchTask} isowner={isowner}></Displaymilestone>
                 })
             }
             </div>
@@ -121,7 +125,7 @@ if (loading) return <div className="p-6">Loading....</div>
 
         {
             selectedmilestone ? (    
-            <TaskCard oncreattaskbtnclick={setcreattaskbtnclick} displaytask={displaytask} taskloading={taskloading} fetchTask={fetchTask} updateTaskStatusInUI={updateTaskStatusInUI} updateMilestoneStatusUI={updateMilestoneStatusUI} updateProjectStatusUI={updateProjectStatusUI}/>
+            <TaskCard oncreattaskbtnclick={setcreattaskbtnclick} displaytask={displaytask} taskloading={taskloading} fetchTask={fetchTask} updateTaskStatusInUI={updateTaskStatusInUI} updateMilestoneStatusUI={updateMilestoneStatusUI} updateProjectStatusUI={updateProjectStatusUI} isowner={isowner}/>
             ):(
         <div className='h-full flex justify-center items-center text-[#6D8196]'>
           Select a milestone to create and view its tasks 
@@ -141,7 +145,7 @@ if (loading) return <div className="p-6">Loading....</div>
         
         {
             creattaskbtnclick && (
-                <CreateTask creattaskbtnclick={setcreattaskbtnclick} prjtId={selectedmilestone.projectId} mileId={selectedmilestone._id} fetchTask={fetchTask}/>
+                <CreateTask creattaskbtnclick={setcreattaskbtnclick} prjtId={selectedmilestone.projectId} mileId={selectedmilestone._id} fetchTask={fetchTask} isowner={isowner}/>
             )
         }
     </div>

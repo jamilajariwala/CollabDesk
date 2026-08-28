@@ -44,9 +44,9 @@ const getAllMilestone= asyncHandler(async(req,res)=>{
 
   const project = await Project.findById(prjtId)
     if (!project) throw new ApiError(404, "project not found")
-    if (project.owner.toString() !== req.user._id.toString()) {
-        throw new ApiError(403, "Not authorized")
-    }
+    // if (project.owner.toString() !== req.user._id.toString()) {
+    //     throw new ApiError(403, "Not authorized")
+    // }
 
     const milestones=await Milestone.find({
         projectId:prjtId

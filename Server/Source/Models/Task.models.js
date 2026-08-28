@@ -42,6 +42,12 @@ const taskSchema=new mongoose.Schema({
         respondedAt:{
             type:Date
         },
+        rejectedAt:{
+            type:Date
+        },
+        feedback:{
+            type:String
+        },
         respondedBy:{
             type:mongoose.Schema.Types.ObjectId,
             ref:'User'

@@ -58,9 +58,9 @@ const getAllTask=asyncHandler(async(req,res)=>{
      if (!project) {
         throw new ApiError(404, "Project not found")
     }
-    if(project.owner.toString() !== req.user._id.toString()){
-        throw new ApiError(403,"unauthorized request")
-    }
+    // if(project.owner.toString() !== req.user._id.toString()){
+    //     throw new ApiError(403,"unauthorized request")
+    // }
 
     const tasks=await Task.find({
         milestoneId:mileId
@@ -82,9 +82,9 @@ const getOneTask=asyncHandler(async(req,res)=>{
         throw new ApiError(404,"Task not found")
     }
 
-    if(task.owner.toString() != req.user._id.toString()){
-        throw new ApiError(403,"unauthorized request")
-    }
+    // if(task.owner.toString() != req.user._id.toString()){
+    //     throw new ApiError(403,"unauthorized request")
+    // }
 
     return res
     .status(200)
@@ -199,11 +199,162 @@ const updateTaskStatus=asyncHandler(async(req,res)=>{
     )
 })
 
+const approveTask=asyncHandler(async(req,res)=>{
+    const {prjtId,mileId,taskId}=req.params
+    if(!mongoose.Types.ObjectId.isValid(taskId)){
+        throw new ApiError(400,"invalid taskId")
+    }
+    if(!mongoose.Types.ObjectId.isValid(prjtId)){
+        throw new ApiError(400,"invalid project Id")
+    }
+    if(!mongoose.Types.ObjectId.isValid(mileId)){
+        throw new ApiError(400,"invalid milestone Id")
+    }
+     const project = await Project.findOne({
+        _id: prjtId,
+        client: req.user._id
+    });
+
+    if (!project) {
+        throw new ApiError(
+            403,
+            "You are not authorized to approve this task"
+        );
+    }
+    const task=await Task.findOne({
+        _id:taskId,
+        projectId:prjtId,
+        milestoneId:mileId,
+    })
+    if (!task) {
+        throw new ApiError(
+            404,
+            "task not found"
+        );
+    }
+
+    task.approval.status="approved"
+    task.approval.respondedAt= new Date
+    task.approval.respondedBy=req.user._id
+
+    task.status="completed"
+
+     await task.save();
+
+     const tasks = await Task.find({
+        milestoneId: task.milestoneId
+    });
+
+    const allTasksComplete =
+        tasks.length > 0 &&
+        tasks.every(
+            item => item.status === "completed"
+        );
+
+
+    const updatemilestone =
+        await Milestone.findByIdAndUpdate(
+            task.milestoneId,
+            {
+                status: allTasksComplete
+                    ? "completed"
+                    : "in_progress"
+            },
+            { new: true }
+        )
+
+         const milestones = await Milestone.find({
+        projectId: task.projectId
+    });
+
+    const allMilestonesComplete =
+        milestones.length > 0 &&
+        milestones.every(
+            milestone =>
+                milestone.status === "completed"
+        );
+
+
+    const updateproject =
+        await Project.findByIdAndUpdate(
+            task.projectId,
+            {
+                projectStatus: allMilestonesComplete
+                    ? "Completed"
+                    : "In_Progress"
+            },
+            { new: true }
+        )
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                { task },
+                "Task approved successfully"
+            )
+        )
+})
+
+const rejectTask=asyncHandler(async(req,res)=>{
+     const {prjtId,mileId,taskId}=req.params
+     const {feedback}=req.body
+    if(!mongoose.Types.ObjectId.isValid(taskId)){
+        throw new ApiError(400,"invalid taskId")
+    }
+    if(!mongoose.Types.ObjectId.isValid(prjtId)){
+        throw new ApiError(400,"invalid project Id")
+    }
+    if(!mongoose.Types.ObjectId.isValid(mileId)){
+        throw new ApiError(400,"invalid milestone Id")
+    }
+     const project = await Project.findOne({
+        _id: prjtId,
+        client: req.user._id
+    });
+
+    if (!project) {
+        throw new ApiError(
+            403,
+            "You are not authorized to approve this task"
+        );
+    }
+
+    const task=await Task.findOne({
+        _id:taskId,
+        projectId:prjtId,
+        milestoneId:mileId,
+    })
+    if (!task) {
+        throw new ApiError(
+            404,
+            "task not found"
+        );
+    }
+    task.approval.status="changes_requested"
+    task.approval.rejectedAt=new Date
+    task.approval.feedback=feedback
+    task.approval.respondedBy=req.user._id
+
+    task.status = "in_progress"
+
+    await task.save()
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200,{task},"Task rejected")
+    )
+})
+
 export{
     createTask,
     getAllTask,
     getOneTask,
     updateTask,
     deleteTask,
-    updateTaskStatus
+    updateTaskStatus,
+    approveTask,
+    rejectTask
 }

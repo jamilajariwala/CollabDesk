@@ -19,9 +19,10 @@ const inviteColor = {
       Accepted: "bg-teal-100 text-teal-700"
 }
   const {id}=useParams()
+  const [isowner,setIsowner]=useState(false)
   const [projectdetail,setProjectDetail]=useState(null)
   const [error,setError]=useState("")
-  const {setUser}=useContext(AuthContext)
+  const {setUser,user}=useContext(AuthContext)
   const [loading,setLoading]=useState(true)
   const navigate=useNavigate()
   const updateProjectStatusUI=(projectId,newstatus)=>{
@@ -39,6 +40,9 @@ const inviteColor = {
       setLoading(true)
    const respone= await api.get(`/project/${id}`)
    setProjectDetail(respone.data.data.project)
+   setIsowner(respone?.data?.data?.project?.owner._id === user.user._id)
+   console.log(isowner)
+   
   } catch (error) {
     if(error.response?.status===401){
       setUser(null)
@@ -66,7 +70,9 @@ if (loading) return <div className="p-6">Loading project details...</div>
       </button>
       <div className='flex justify-between items-center flex-wrap gap-3'>
         <h1 className='text-4xl font-bold'>{projectdetail.title}</h1>
-        <div className='flex gap-4'>
+        {
+          isowner && (
+            <div className='flex gap-4'>
           <button type="button" className='bg-[#6D8196] px-6 py-2 text-md  rounded-lg text-white hover:bg-[#5C7087] hover:shadow-md transition-all duration-200 active:scale-95' onClick={()=>{
             setEditBtnclick(true)
           }}>Edit Project</button>
@@ -74,6 +80,8 @@ if (loading) return <div className="p-6">Loading project details...</div>
             setDeleteBtnclick(true)
           }}>Delete Project</button>
         </div>
+          )
+        }
       </div>
       <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
         <ProjectDetailCard title="Project Status" detail={projectdetail.projectStatus} statusColors={statusColors[projectdetail.projectStatus]}/>
@@ -91,7 +99,7 @@ if (loading) return <div className="p-6">Loading project details...</div>
         <hr className='text-[#4A4A4A]/40' />
       </div>
       <div>
-        <Outlet context={{updateProjectStatusUI,updateProjectClientInviteUI}}/>
+        <Outlet context={{updateProjectStatusUI,updateProjectClientInviteUI,isowner}}/>
       </div>
       {
         editbtnclick && (
