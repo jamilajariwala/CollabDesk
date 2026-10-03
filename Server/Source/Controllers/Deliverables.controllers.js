@@ -28,7 +28,7 @@ const addDeliverables=asyncHandler(async(req,res)=>{
         throw new ApiError(403,"unauthorizes request")
     }
 
-    let uploadedUrl, cloudinaryPublicId, resoursetype
+    let uploadedUrl, cloudinaryPublicId, resoursetype, response
 
     if(type == "Link"){
         if(!url || url.trim()==""){
@@ -40,7 +40,14 @@ const addDeliverables=asyncHandler(async(req,res)=>{
         if(!req.file){
             throw new ApiError(400,"image or Pdf is required")
         }
-        const response=await uploadCloudinary(req.file.path)
+        if (type === "Image") {
+            response = await uploadCloudinary(req.file.path, "image");
+        }
+
+        if (type === "Pdf") {
+            response = await uploadCloudinary(req.file.path, "image");
+        }
+
         if(!response){
             throw new ApiError(500,"something went wrong while uploading image or pdf")
         }

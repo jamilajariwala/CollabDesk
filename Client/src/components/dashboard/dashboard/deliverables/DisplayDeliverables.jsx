@@ -64,8 +64,8 @@ const DisplayDeliverables = ({item,setDeleteBtnclick,setEditBtnclick,setDelivera
                     </div>
                   <div className='flex gap-10 justify-end items-center'>
                       <p className={`text-md px-4 py-1 w-fit rounded-full font-medium ${statusColors[item.type]}`}>{item.type}</p> 
-                     {item.type === "Link" ? <a href={item.url}><button className="px-6 py-2 border border-amber-950 text-amber-950 rounded-lg">Open</button></a> 
-                     :<a href={item.url}  target="_blank" rel="noopener noreferrer"><button className="px-6 py-2 border border-amber-950 text-amber-950 rounded-lg">View</button></a>}
+                     {item.type === "Link" ? <a href={item.url} onClick={(e) => e.stopPropagation()}><button className="px-6 py-2 border border-amber-950 text-amber-950 rounded-lg">Open</button></a> 
+                     :<a href={item.url}  target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}><button className="px-6 py-2 border border-amber-950 text-amber-950 rounded-lg">View</button></a>}
                   </div>   
               </div>
               </div>

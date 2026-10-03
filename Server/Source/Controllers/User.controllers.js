@@ -4,6 +4,10 @@ import ApiError from '../Utils/ApiError.js';
 import ApiResponse from '../Utils/ApiResponse.js';
 import jwt from 'jsonwebtoken'
 import sendMail from "../Utils/SendEmail.js";
+import { Project } from "../Models/Project.models.js";
+import { Milestone } from "../Models/Milestone.models.js";
+import { Task } from "../Models/Task.models.js";
+import Deliverables from "../Models/Deliverables.model.js";
 
 const refreshAccessToken=async(req,res)=>{
     try{
@@ -348,8 +352,35 @@ const resendOtp=asyncHandler(async(req,res)=>{
 })
 
 const deleteUser=asyncHandler(async(req,res)=>{
+    const userId = req.user._id;
+
+    const userProjects = await Project.find({ owner: userId });
+    const projectIds = userProjects.map(project => project._id);
+
+    const userMilestones = await Milestone.find({ projectId: { $in: projectIds } });
+    const milestoneIds = userMilestones.map(milestone => milestone._id);
+
+    const userTasks = await Task.find({
+        $or: [
+            { milestoneId: { $in: milestoneIds } },
+            { owner: userId }
+        ]
+    });
+    const taskIds = userTasks.map(task => task._id);
+
+    await Deliverables.deleteMany({
+        $or: [
+            { taskId: { $in: taskIds } },
+            { owner: userId }
+        ]
+    });
+
+    await Task.deleteMany({ _id: { $in: taskIds } });
+    await Milestone.deleteMany({ _id: { $in: milestoneIds } });
+    await Project.deleteMany({ _id: { $in: projectIds } });
+    
     await User.findByIdAndDelete(
-        req.user._id
+       userId
     )
     const options={
         httpOnly:true,

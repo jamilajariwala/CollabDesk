@@ -10,8 +10,8 @@ const Pricing = () => {
             plannm:'Free',
             heading:'Everything you need to get Started',
             price:'0',
-            featuresprovided:['Upto 3 projects','Upto 5 team members per project','Invite 2 client per project','Create milestones', 'Real-time chat', 'Comments and Discussion', 'Notification', '1GB storage'],
-            btntext:'Get Started',
+            featuresprovided:['Upto 5 projects','Invite limited client per project','Create milestones', 'Real-time chat (coming soon)', 'Comments and Discussion', 'Notification (Coming soon)', 'Shared Document'],
+            btntext:'Upcoming',
             bordercolor:'border-transparent'
         },
         {
@@ -20,8 +20,8 @@ const Pricing = () => {
             plannm:'Pro',
             heading:'Unlock the full potential of CollbDesk',
             price:'299',
-            featuresprovided:['Unlimited projects','Upto 10 team members per project','Unlimited clients invitation per project','Create milestones', 'Real-time chat', 'Comments and Discussion', 'Notification', '20GB storage', 'Meeting Scheduling(Coming Soon)','Shared Document(Coming Soon)'],
-            btntext:'Upgrade to Pro',
+            featuresprovided:['Unlimited projects','Unlimited clients invitation per project','Create milestones', 'Real-time chat (coming soon)', 'Comments and Discussion', 'Notification (Coming soon)' , 'Meeting Scheduling (Coming Soon)','Shared Document'],
+            btntext:'Upcoming',
             bordercolor:'border-[#d6efff]'
         }
     ]

@@ -19,6 +19,7 @@ import Milestone from "./components/dashboard/dashboard/milestone/Milestone.jsx"
 import DeliverablesCard from "./components/dashboard/dashboard/deliverables/DeliverablesCard.jsx";
 import Project from "./components/dashboard/dashboard/Project.jsx";
 import Dashboard from "./components/dashboard/dashboard/DashBoard.jsx";
+import About from "./components/landingpage/About.jsx";
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home/>}></Route>
             <Route path="/register" element={<Register/>}></Route>
+            <Route path="/about" element={<About/>}></Route>
             <Route path="/login" element={<Login/>}></Route>
             <Route path="/forgotpassword" element={<ForgotPassword/>}></Route>
             <Route path="/verifyOtp" element={<VerifyOtp/>}></Route>

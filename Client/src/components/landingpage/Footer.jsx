@@ -3,6 +3,7 @@ import {ChevronRight} from 'lucide-react'
 import { RiLinkedinLine } from "react-icons/ri";
 import { FiGithub } from "react-icons/fi";
 import { HiOutlineMail } from "react-icons/hi";
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -49,10 +50,11 @@ const Footer = () => {
                     </div>
                    <ul className=' text-white/70 leading-relaxed  select-none flex flex-col gap-1 mt-2'>
                         <li >
-                            <a className='relative flex group items-center cursor-pointer'>
+                            <Link to='/about' className='relative flex group items-center cursor-pointer'>
                                 <ChevronRight size={15} color="#2773ba" className='opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all duration-200 '/>
+                                
                                 <span className='group-hover:text-white group-hover:translate-x-2 transition-all duration-200'>About</span>
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </div>
@@ -101,7 +103,7 @@ const Footer = () => {
                     <a href="https://github.com/jamilajariwala" target="_blank" rel="noopener noreferrer" className='flex justify-center items-center p-3 rounded-full text-white bg-white/5 border border-white/10 hover:text-[#0A66C2] hover:bg-white hover:shadow-[#0A66C2] hover:shadow-md hover:-translate-y-1 transition-all duration-300'>
                         <FiGithub size={20}/>
                     </a>
-                    <a href="mailto:shabbirjarivala@gmail.com" target="_blank" rel="noopener noreferrer" className='flex justify-center items-center p-3 rounded-full text-white bg-white/5 border border-white/10 hover:text-[#0A66C2] hover:bg-white hover:shadow-[#0A66C2] hover:shadow-md hover:-translate-y-1 transition-all duration-300'>
+                    <a href="mailto:jamilasjariwala12@gmail.com" target="_blank" rel="noopener noreferrer" className='flex justify-center items-center p-3 rounded-full text-white bg-white/5 border border-white/10 hover:text-[#0A66C2] hover:bg-white hover:shadow-[#0A66C2] hover:shadow-md hover:-translate-y-1 transition-all duration-300'>
                         <HiOutlineMail size={20}/>
                     </a>
                    </div>

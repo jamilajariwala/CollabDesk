@@ -26,7 +26,7 @@ const Navbar=()=>{
                 md:text-lg md:flex md:flex-row md:static md:gap-4 
                 lg:text-xl lg:gap-6`}>
                     <li className='cursor-pointer transition-colors duration-200 hover:text-[#6D8196]'><Link to="/">Home</Link></li>
-                    <li className='cursor-pointer transition-colors duration-200 hover:text-[#6D8196]'>About</li>
+                    <li className='cursor-pointer transition-colors duration-200 hover:text-[#6D8196]'><Link to="/about">About</Link></li>
                     <li className='cursor-pointer transition-colors duration-200 hover:text-[#6D8196]'><a href="#feature_section">Feature</a></li>
                     <li className='cursor-pointer transition-colors duration-200 hover:text-[#6D8196]'><a href="#pricing_section">Price</a></li>
                     <li className='md:hidden cursor-pointer transition-colors duration-200 text-[#4d4d4d] hover:text-[#6D8196]'>

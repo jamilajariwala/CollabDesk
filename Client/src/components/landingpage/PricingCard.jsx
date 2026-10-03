@@ -38,7 +38,8 @@ const PricingCard = ({items}) => {
                     })
                 }
                 <div className='flex flex-row justify-center items-center'>
-                    <button className='text-md md:text-lg lg:text-xl text-[#6D8196] px-6 py-2 rounded-md border border-[#6D8196] hover:text-white hover:bg-[#6D8196] hover:shadow-md group-hover:scale-105 cursor-pointer transition-all duration-200 w-full'>{items.btntext}</button>
+                    <button className='text-md md:text-lg lg:text-xl text-[#6D8196] px-6 py-2 rounded-md border border-[#6D8196] hover:text-white hover:bg-[#6D8196] hover:shadow-md group-hover:scale-105 cursor-pointer transition-all duration-200 w-full disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-[#6D8196] disabled:hover:scale-100  disabled:hover:shadow-none disabled:group-hover:scale-100 disabled:opacity-50 '
+                    disabled>{items.btntext}</button>
                 </div>
             </div>
         </div>

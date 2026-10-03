@@ -43,9 +43,9 @@ const SideBar=()=>{
                         <FolderDot size={18}/> <span className='group-hover:font-medium'>Projects</span>
                     </li>
                     </Link>
-                    <li className=' hover:bg-gray-500/10 p-2 hover:rounded-xl  transition-all group cursor-pointer duration-200 flex items-center gap-3' onClick={toggle}>
+                    {/* <li className=' hover:bg-gray-500/10 p-2 hover:rounded-xl  transition-all group cursor-pointer duration-200 flex items-center gap-3' onClick={toggle}>
                        <Bell size={18}/> <span className='group-hover:font-medium'>Notification</span>
-                    </li>
+                    </li> */}
                     <Link to='/dashboard/profile'>
                     <li className=' hover:bg-gray-500/10 p-2 hover:rounded-xl  transition-all group cursor-pointer duration-200 flex items-center gap-3'onClick={toggle}>
                        <User size={18}/> <span className='group-hover:font-medium'>Profile</span>

@@ -1,6 +1,6 @@
 import fs from 'fs'
 import {v2 as cloudinary} from 'cloudinary'
-const uploadCloudinary=async(file)=>{
+const uploadCloudinary=async(file,resource_type="auto")=>{
     cloudinary.config({ 
         cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
         api_key: process.env.CLOUDINARY_API_KEY, 
@@ -9,7 +9,7 @@ const uploadCloudinary=async(file)=>{
     try{
         const uploadResult = await cloudinary.uploader
        .upload(file,{
-               resource_type:'auto' || 'raw',
+               resource_type:resource_type,
                folder:'/CollabDesk'
            }
        ) 
